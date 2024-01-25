@@ -3,6 +3,8 @@ import Foundation
 class FavouriteDogs {
     static let shared = FavouriteDogs()
 
+    private init() { }
+
     var dogs: [FavouriteDogModel] = []
 }
 
