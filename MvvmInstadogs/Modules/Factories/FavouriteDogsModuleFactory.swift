@@ -4,7 +4,6 @@ struct FavouriteDogsModuleFactory {
         let view = FavouriteDogsViewController()
 
         view.initialize(viewModel: viewModel)
-        view.configureTabBarItem()
 
         return view
     }

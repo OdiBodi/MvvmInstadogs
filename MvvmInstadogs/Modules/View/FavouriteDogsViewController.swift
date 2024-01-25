@@ -63,6 +63,8 @@ extension FavouriteDogsViewController {
             }
             self?.dogsCollectionView.model = model
         }.store(in: &subscriptions)
+
+        configureTabBarItem()
     }
 }
 
@@ -73,7 +75,7 @@ extension FavouriteDogsViewController {
         view.backgroundColor = .systemBackground
     }
 
-    func configureTabBarItem() {
+    private func configureTabBarItem() {
         let image = UIImage(systemName: "star.fill")
         tabBarItem = UITabBarItem(title: "Favourite", image: image, tag: 1)
     }

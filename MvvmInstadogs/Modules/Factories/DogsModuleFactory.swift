@@ -4,7 +4,6 @@ struct DogsModuleFactory {
         let view = DogsViewController()
 
         view.initialize(viewModel: viewModel)
-        view.configureTabBarItem()
 
         return view
     }

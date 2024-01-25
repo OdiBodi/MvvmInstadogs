@@ -78,6 +78,8 @@ extension DogsViewController {
             }
             self?.dogsCollectionView.model = model
         }.store(in: &subscriptions)
+
+        configureTabBarItem()
     }
 }
 
@@ -88,7 +90,7 @@ extension DogsViewController {
         view.backgroundColor = .systemBackground
     }
 
-    func configureTabBarItem() {
+    private func configureTabBarItem() {
         let image = UIImage(systemName: "dog.fill")
         tabBarItem = UITabBarItem(title: "Dogs", image: image, tag: 0)
     }
