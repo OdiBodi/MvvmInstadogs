@@ -113,10 +113,10 @@ extension DogViewCell {
 
 extension DogViewCell {
     private func addSubviews() {
-        addSubview(backgroundImage)
-        addSubview(favouriteImage)
-        addSubview(breedLabel)
-        addSubview(loadingIndicator)
+        contentView.addSubview(backgroundImage)
+        contentView.addSubview(favouriteImage)
+        contentView.addSubview(breedLabel)
+        contentView.addSubview(loadingIndicator)
     }
 
     private func updateSubviewsConstraints() {
