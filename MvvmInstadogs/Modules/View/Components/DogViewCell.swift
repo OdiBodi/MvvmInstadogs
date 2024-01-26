@@ -20,6 +20,10 @@ class DogViewCell: UICollectionViewCell {
         view.isHidden = true
         view.contentMode = .scaleAspectFill
         view.tintColor = .systemRed
+
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(onFavouriteImageTapped))
+        view.addGestureRecognizer(tapGestureRecognizer)
+
         return view
     }()
 
@@ -54,9 +58,6 @@ class DogViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubviews()
-
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(onFavouriteImageTapped))
-        favouriteImage.addGestureRecognizer(tapGestureRecognizer)
     }
 
     required init?(coder: NSCoder) {
