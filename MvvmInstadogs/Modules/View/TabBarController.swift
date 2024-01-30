@@ -1,7 +1,7 @@
 import UIKit
 import Combine
 
-class TabBarController: UITabBarController, CoordinatorModule, UITabBarControllerDelegate {
+class TabBarController: UITabBarController, CoordinatorModule {
     private let completionSubject = PassthroughSubject<TabBarModuleCompletion, Never>()
     private var subscriptions = Set<AnyCancellable>()
 
@@ -35,7 +35,7 @@ extension TabBarController {
 
 // MARK: - UITabBarControllerDelegate
 
-extension TabBarController {
+extension TabBarController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController,
                           shouldSelect viewController: UIViewController) -> Bool {
         guard let selectedViewController = selectedViewController,

@@ -1,10 +1,7 @@
 import UIKit
 import Combine
 
-class DogsCollectionView: UIView,
-                          UICollectionViewDataSource,
-                          UICollectionViewDelegate,
-                          UICollectionViewDelegateFlowLayout {
+class DogsCollectionView: UIView {
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -131,7 +128,7 @@ extension DogsCollectionView {
 
 // MARK: - UICollectionViewDataSource
 
-extension DogsCollectionView {
+extension DogsCollectionView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return model?.count ?? 0
     }
@@ -164,7 +161,7 @@ extension DogsCollectionView {
 
 // MARK: - UICollectionViewDelegate
 
-extension DogsCollectionView {
+extension DogsCollectionView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView,
                         willDisplay cell: UICollectionViewCell,
                         forItemAt indexPath: IndexPath) {
@@ -193,7 +190,7 @@ extension DogsCollectionView {
 
 // MARK: - UICollectionViewDelegateFlowLayout
 
-extension DogsCollectionView {
+extension DogsCollectionView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
