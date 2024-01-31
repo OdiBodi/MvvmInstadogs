@@ -11,6 +11,7 @@ class FavouriteDogs {
 // MARK: - Operations
 
 extension FavouriteDogs {
+    @discardableResult
     func load() -> Bool {
         guard let url = url() else {
             return false
@@ -28,6 +29,7 @@ extension FavouriteDogs {
         return false
     }
 
+    @discardableResult
     func save() -> Bool {
         do {
             let model = FavouriteDogsModel(dogs: dogs)
