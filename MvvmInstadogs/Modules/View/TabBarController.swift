@@ -4,12 +4,6 @@ import Combine
 class TabBarController: UITabBarController, CoordinatorModule {
     private let completionSubject = PassthroughSubject<TabBarModuleCompletion, Never>()
     private var subscriptions = Set<AnyCancellable>()
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        configure()
-        configureView()
-    }
 }
 
 // MARK: - Publishers
@@ -17,6 +11,16 @@ class TabBarController: UITabBarController, CoordinatorModule {
 extension TabBarController {
     var completion: AnyPublisher<TabBarModuleCompletion, Never> {
         completionSubject.eraseToAnyPublisher()
+    }
+}
+
+// MARK: - Life cycle
+
+extension TabBarController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        configure()
+        configureView()
     }
 }
 
