@@ -2,27 +2,7 @@ import UIKit
 import Combine
 
 class DogsCollectionView: UIView {
-    private lazy var collectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        layout.minimumInteritemSpacing = 2
-        layout.minimumLineSpacing = 2
-
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(onRefreshControl), for: .valueChanged)
-
-        let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.dataSource = self
-        view.delegate = self
-        view.register(DogViewCell.self, forCellWithReuseIdentifier: "DogViewCell")
-        view.backgroundColor = .systemBackground
-        view.isScrollEnabled = true
-        view.contentInset = UIEdgeInsets(top: 2, left: 2, bottom: 2, right: 2)
-        view.refreshControl = refreshControl
-
-        return view
-    }()
+    private lazy var collectionView = initializeCollectionView()
 
     var model: [DogModel]? {
         didSet {
@@ -88,6 +68,28 @@ extension DogsCollectionView {
 // MARK: - Subviews
 
 extension DogsCollectionView {
+    private func initializeCollectionView() -> UICollectionView {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.minimumInteritemSpacing = 2
+        layout.minimumLineSpacing = 2
+
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(onRefreshControl), for: .valueChanged)
+
+        let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.dataSource = self
+        view.delegate = self
+        view.register(DogViewCell.self, forCellWithReuseIdentifier: "DogViewCell")
+        view.backgroundColor = .systemBackground
+        view.isScrollEnabled = true
+        view.contentInset = UIEdgeInsets(top: 2, left: 2, bottom: 2, right: 2)
+        view.refreshControl = refreshControl
+
+        return view
+    }
+
     private func addSubviews() {
         addSubview(collectionView)
     }

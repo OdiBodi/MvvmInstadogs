@@ -2,37 +2,13 @@ import UIKit
 import Combine
 
 class FavouriteDogsViewController: BaseCoordinatorModule<FavouriteDogsModuleCompletion, Never> {
-    private lazy var dogsCollectionView: DogsCollectionView = {
-        let view = DogsCollectionView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-
-        view.favouritedHandler = { [weak self] model in
-            self?.viewModel?.favourited(dogModel: model) ?? false
-        }
-        view.newDataFetch.sink { [weak self] refreshControl in
-            self?.viewModel?.fetch()
-            RunLoop.main.perform {
-                refreshControl.endRefreshing()
-            }
-        }.store(in: &subscriptions)
-        view.openPreview.sink { [weak self] (image, breed) in
-            self?.completionSubject.send(.openPreview(image: image, breed: breed))
-        }.store(in: &subscriptions)
-        view.addFavourite.sink { [weak self] model in
-            self?.viewModel?.addFavourite(dogModel: model)
-        }.store(in: &subscriptions)
-        view.removeFavourite.sink { [weak self] model in
-            self?.viewModel?.removeFavourite(dogModel: model)
-        }.store(in: &subscriptions)
-
-        return view
-    }()
+    private lazy var collectionView = initializeCollectionView()
 
     private var viewModel: FavouriteDogsViewModel?
     private var subscriptions = Set<AnyCancellable>()
 }
 
-// MARK: Life cycle
+// MARK: - Life cycle
 
 extension FavouriteDogsViewController {
     override func viewDidLoad() {
@@ -57,11 +33,12 @@ extension FavouriteDogsViewController {
 extension FavouriteDogsViewController {
     func initialize(viewModel: FavouriteDogsViewModel) {
         self.viewModel = viewModel
+
         self.viewModel?.$model.sink { [weak self] model in
             guard self?.viewModel?.model != model else {
                 return
             }
-            self?.dogsCollectionView.model = model
+            self?.collectionView.model = model
         }.store(in: &subscriptions)
 
         configureTabBarItem()
@@ -84,12 +61,38 @@ extension FavouriteDogsViewController {
 // MARK: - Subviews
 
 extension FavouriteDogsViewController {
+    private func initializeCollectionView() -> DogsCollectionView {
+        let view = DogsCollectionView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+
+        view.favouritedHandler = { [weak self] model in
+            self?.viewModel?.favourited(dogModel: model) ?? false
+        }
+        view.newDataFetch.sink { [weak self] refreshControl in
+            self?.viewModel?.fetch()
+            RunLoop.main.perform {
+                refreshControl.endRefreshing()
+            }
+        }.store(in: &subscriptions)
+        view.openPreview.sink { [weak self] (image, breed) in
+            self?.completionSubject.send(.openPreview(image: image, breed: breed))
+        }.store(in: &subscriptions)
+        view.addFavourite.sink { [weak self] model in
+            self?.viewModel?.addFavourite(dogModel: model)
+        }.store(in: &subscriptions)
+        view.removeFavourite.sink { [weak self] model in
+            self?.viewModel?.removeFavourite(dogModel: model)
+        }.store(in: &subscriptions)
+
+        return view
+    }
+
     private func addSubviews() {
-        view.addSubview(dogsCollectionView)
+        view.addSubview(collectionView)
     }
 
     private func updateSubviewsConstraints() {
-        dogsCollectionView.snp.makeConstraints { maker in
+        collectionView.snp.makeConstraints { maker in
             maker.left.right.equalToSuperview()
             maker.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             maker.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
@@ -101,6 +104,6 @@ extension FavouriteDogsViewController {
 
 extension FavouriteDogsViewController {
     func scrollToTop() {
-        dogsCollectionView.scrollToTop()
+        collectionView.scrollToTop()
     }
 }

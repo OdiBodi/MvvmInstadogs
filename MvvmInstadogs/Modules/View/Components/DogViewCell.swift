@@ -2,50 +2,10 @@ import UIKit
 import SnapKit
 
 class DogViewCell: UICollectionViewCell {
-    private lazy var backgroundImage: UIImageView = {
-        let view = UIImageView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .systemGray6
-        view.contentMode = .scaleAspectFill
-        view.clipsToBounds = true
-        view.layer.cornerRadius = 5
-        return view
-    }()
-
-    private lazy var favouriteImage: UIImageView = {
-        let image = UIImage(systemName: "heart")
-        let view = UIImageView(image: image)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.isUserInteractionEnabled = true
-        view.isHidden = true
-        view.contentMode = .scaleAspectFill
-        view.tintColor = .systemRed
-
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(onFavouriteImageTapped))
-        view.addGestureRecognizer(tapGestureRecognizer)
-
-        return view
-    }()
-
-    private lazy var breedLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.adjustsFontSizeToFitWidth = true
-        label.isHidden = true
-        label.textAlignment = .center
-        label.backgroundColor = .systemBackground
-        label.layer.opacity = 0.7
-        return label
-    }()
-
-    private lazy var loadingIndicator: UIActivityIndicatorView = {
-        let view = UIActivityIndicatorView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.transform = .init(scaleX: 1.25, y: 1.25)
-        view.hidesWhenStopped = true
-        view.startAnimating()
-        return view
-    }()
+    private lazy var backgroundImage = initializeBackgroundImage()
+    private lazy var favouriteImage = initializeFavouriteImage()
+    private lazy var breedLabel = initializeBreedLabel()
+    private lazy var loadingIndicator = initializeLoadingIndicator()
 
     var favourited: Bool = false {
         didSet {
@@ -94,7 +54,7 @@ extension DogViewCell {
     }
 }
 
-// MARK: Initializators
+// MARK: - Initializators
 
 extension DogViewCell {
     func initialize(image: UIImage, breed: String, favourited: Bool) {
@@ -113,6 +73,51 @@ extension DogViewCell {
 // MARK: - Subviews
 
 extension DogViewCell {
+    private func initializeBackgroundImage() -> UIImageView {
+        let view = UIImageView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .systemGray6
+        view.contentMode = .scaleAspectFill
+        view.clipsToBounds = true
+        view.layer.cornerRadius = 5
+        return view
+    }
+
+    private func initializeFavouriteImage() -> UIImageView {
+        let image = UIImage(systemName: "heart")
+        let view = UIImageView(image: image)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.isUserInteractionEnabled = true
+        view.isHidden = true
+        view.contentMode = .scaleAspectFill
+        view.tintColor = .systemRed
+
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(onFavouriteImageTapped))
+        view.addGestureRecognizer(tapGestureRecognizer)
+
+        return view
+    }
+
+    private func initializeBreedLabel() -> UILabel {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.adjustsFontSizeToFitWidth = true
+        label.isHidden = true
+        label.textAlignment = .center
+        label.backgroundColor = .systemBackground
+        label.layer.opacity = 0.7
+        return label
+    }
+
+    private func initializeLoadingIndicator() -> UIActivityIndicatorView {
+        let view = UIActivityIndicatorView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.transform = .init(scaleX: 1.25, y: 1.25)
+        view.hidesWhenStopped = true
+        view.startAnimating()
+        return view
+    }
+
     private func addSubviews() {
         contentView.addSubview(backgroundImage)
         contentView.addSubview(favouriteImage)
@@ -140,7 +145,7 @@ extension DogViewCell {
     }
 }
 
-// MARK: Callbacks
+// MARK: - Callbacks
 
 extension DogViewCell {
     @objc private func onFavouriteImageTapped() {

@@ -3,7 +3,73 @@ import UIKit
 import Combine
 
 class DogsViewController: BaseCoordinatorModule<DogsModuleCompletion, Never> {
-    private lazy var dogsCollectionView: DogsCollectionView = {
+    private lazy var collectionView = initializeCollectionView()
+
+    private var viewModel: DogsViewModel?
+    private var subscriptions = Set<AnyCancellable>()
+}
+
+// MARK: - Life cycle
+
+extension DogsViewController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        configureView()
+        addSubviews()
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        updateSubviewsConstraints()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        if viewModel?.model.isEmpty ?? true {
+            Task.detached { [weak self] in
+                await self?.viewModel?.fetch()
+            }
+        } else {
+            collectionView.update()
+        }
+    }
+}
+
+// MARK: - Initializators
+
+extension DogsViewController {
+    func initialize(viewModel: DogsViewModel) {
+        self.viewModel = viewModel
+
+        self.viewModel?.$model.sink { [weak self] model in
+            guard self?.viewModel?.model != model else {
+                return
+            }
+            self?.collectionView.model = model
+        }.store(in: &subscriptions)
+
+        configureTabBarItem()
+    }
+}
+
+// MARK: - Configurators
+
+extension DogsViewController {
+    private func configureView() {
+        view.backgroundColor = .systemBackground
+    }
+
+    private func configureTabBarItem() {
+        let image = UIImage(systemName: "dog.fill")
+        tabBarItem = UITabBarItem(title: "Dogs", image: image, tag: 0)
+    }
+}
+
+// MARK: - Subviews
+
+extension DogsViewController {
+    private func initializeCollectionView() -> DogsCollectionView {
         let view = DogsCollectionView()
         view.translatesAutoresizingMaskIntoConstraints = false
 
@@ -34,77 +100,14 @@ class DogsViewController: BaseCoordinatorModule<DogsModuleCompletion, Never> {
         }.store(in: &subscriptions)
 
         return view
-    }()
-
-    private var viewModel: DogsViewModel?
-    private var subscriptions = Set<AnyCancellable>()
-}
-
-// MARK: Life cycle
-
-extension DogsViewController {
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        configureView()
-        addSubviews()
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        updateSubviewsConstraints()
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        if viewModel?.model.isEmpty ?? true {
-            Task.detached { [weak self] in
-                await self?.viewModel?.fetch()
-            }
-        } else {
-            dogsCollectionView.update()
-        }
-    }
-}
-
-// MARK: - Initializators
-
-extension DogsViewController {
-    func initialize(viewModel: DogsViewModel) {
-        self.viewModel = viewModel
-        self.viewModel?.$model.sink { [weak self] model in
-            guard self?.viewModel?.model != model else {
-                return
-            }
-            self?.dogsCollectionView.model = model
-        }.store(in: &subscriptions)
-
-        configureTabBarItem()
-    }
-}
-
-// MARK: - Configurators
-
-extension DogsViewController {
-    private func configureView() {
-        view.backgroundColor = .systemBackground
-    }
-
-    private func configureTabBarItem() {
-        let image = UIImage(systemName: "dog.fill")
-        tabBarItem = UITabBarItem(title: "Dogs", image: image, tag: 0)
-    }
-}
-
-// MARK: - Subviews
-
-extension DogsViewController {
     private func addSubviews() {
-        view.addSubview(dogsCollectionView)
+        view.addSubview(collectionView)
     }
 
     private func updateSubviewsConstraints() {
-        dogsCollectionView.snp.makeConstraints { maker in
+        collectionView.snp.makeConstraints { maker in
             maker.left.right.equalToSuperview()
             maker.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             maker.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
@@ -116,6 +119,6 @@ extension DogsViewController {
 
 extension DogsViewController {
     func scrollToTop() {
-        dogsCollectionView.scrollToTop()
+        collectionView.scrollToTop()
     }
 }

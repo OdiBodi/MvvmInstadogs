@@ -1,34 +1,12 @@
 import UIKit
 
 class ImagePreviewViewController: UIViewController {
-    private lazy var topPlaceholderView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .systemGray
-        view.layer.cornerRadius = 2.5
-        return view
-    }()
-
-    private lazy var backgroundImage: UIImageView = {
-        let view = UIImageView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.contentMode = .scaleAspectFit
-        view.backgroundColor = .systemBackground
-        return view
-    }()
-
-    private lazy var breedLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.adjustsFontSizeToFitWidth = true
-        label.textAlignment = .center
-        label.font = .systemFont(ofSize: 32)
-        label.backgroundColor = .systemBackground
-        return label
-    }()
+    private lazy var topPlaceholderView = initializeTopPlaceholderView()
+    private lazy var backgroundImage = initializeBackgroundImage()
+    private lazy var breedLabel = initializeBreedLabel()
 }
 
-// MARK: Life cycle
+// MARK: - Life cycle
 
 extension ImagePreviewViewController {
     override func viewDidLoad() {
@@ -43,7 +21,7 @@ extension ImagePreviewViewController {
     }
 }
 
-// MARK: Initializators
+// MARK: - Initializators
 
 extension ImagePreviewViewController {
     func initialize(viewModel: ImagePreviewViewModel) {
@@ -64,6 +42,32 @@ extension ImagePreviewViewController {
 // MARK: - Subviews
 
 extension ImagePreviewViewController {
+    private func initializeTopPlaceholderView() -> UIView {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .systemGray
+        view.layer.cornerRadius = 2.5
+        return view
+    }
+
+    private func initializeBackgroundImage() -> UIImageView {
+        let view = UIImageView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.contentMode = .scaleAspectFit
+        view.backgroundColor = .systemBackground
+        return view
+    }
+
+    private func initializeBreedLabel() -> UILabel {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.adjustsFontSizeToFitWidth = true
+        label.textAlignment = .center
+        label.font = .systemFont(ofSize: 32)
+        label.backgroundColor = .systemBackground
+        return label
+    }
+
     private func addSubviews() {
         view.addSubview(topPlaceholderView)
         view.addSubview(backgroundImage)
