@@ -81,7 +81,7 @@ extension DogsCollectionView {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.dataSource = self
         view.delegate = self
-        view.register(DogViewCell.self, forCellWithReuseIdentifier: "DogViewCell")
+        view.register(DogViewCell.self, forCellWithReuseIdentifier: DogViewCell.id)
         view.backgroundColor = .systemBackground
         view.isScrollEnabled = true
         view.contentInset = UIEdgeInsets(top: 2, left: 2, bottom: 2, right: 2)
@@ -137,7 +137,7 @@ extension DogsCollectionView: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DogViewCell",
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DogViewCell.id,
                                                       for: indexPath) as! DogViewCell
 
         let index = indexPath.item
