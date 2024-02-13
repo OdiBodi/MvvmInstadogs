@@ -2,8 +2,6 @@ import UIKit
 import SnapKit
 
 class DogViewCell: UICollectionViewCell {
-    static let id = "\(DogViewCell.self)"
-
     private lazy var backgroundImage = initializeBackgroundImage()
     private lazy var favouriteImage = initializeFavouriteImage()
     private lazy var breedLabel = initializeBreedLabel()
@@ -25,6 +23,12 @@ class DogViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
+}
+
+// MARK: - Static
+
+extension DogViewCell {
+    static let id = "\(DogViewCell.self)"
 }
 
 // MARK: - Model
