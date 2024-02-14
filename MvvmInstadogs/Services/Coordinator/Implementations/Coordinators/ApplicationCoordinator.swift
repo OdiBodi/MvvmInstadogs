@@ -2,7 +2,7 @@ import Combine
 import UIKit
 
 class ApplicationCoordinator: BaseCoordinator<Void, Never> {
-    private let tabBarController: TabBarController
+    private weak var tabBarController: TabBarController?
 
     init(tabBarController: TabBarController) {
         self.tabBarController = tabBarController
@@ -17,8 +17,8 @@ class ApplicationCoordinator: BaseCoordinator<Void, Never> {
 
 extension ApplicationCoordinator {
     private func configureTabBarModule() {
-        tabBarController.viewControllers = [dogsViewModule(), favouriteDogsViewModule()]
-        tabBarController.completion.sink { completion in
+        tabBarController?.viewControllers = [dogsViewModule(), favouriteDogsViewModule()]
+        tabBarController?.completion.sink { completion in
             switch completion {
             case .dogsViewOpened(let viewController):
                 (viewController as? DogsViewController)?.scrollToTop()
