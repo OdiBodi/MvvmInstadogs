@@ -18,7 +18,7 @@ extension ImagesDownloader {
         let operationHash = operation.hash
 
         operation.completion = { [weak self, operationHash] image in
-            guard let image = image else {
+            guard let image else {
                 if self?.operations[id]?.hash == operationHash {
                     self?.operations.removeValue(forKey: id)
                 }

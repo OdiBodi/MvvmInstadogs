@@ -42,7 +42,7 @@ extension TabBarController {
 extension TabBarController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController,
                           shouldSelect viewController: UIViewController) -> Bool {
-        guard let selectedViewController = selectedViewController,
+        guard let selectedViewController,
               let currentView = selectedViewController.view,
               let nextView = viewController.view,
               currentView != nextView else {
@@ -59,7 +59,7 @@ extension TabBarController: UITabBarControllerDelegate {
     }
 
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-        guard let selectedViewController = selectedViewController else {
+        guard let selectedViewController else {
             return
         }
         if item.tag == 0 {

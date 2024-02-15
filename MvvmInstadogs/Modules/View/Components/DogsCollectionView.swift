@@ -178,14 +178,10 @@ extension DogsCollectionView: UICollectionViewDelegate {
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let cell = collectionView.cellForItem(at: indexPath) as? DogViewCell else {
+        guard let cell = collectionView.cellForItem(at: indexPath) as? DogViewCell,
+              let image = cell.image else {
             return
         }
-
-        guard let image = cell.image else {
-            return
-        }
-
         openPreviewSubject.send((image: image, breed: cell.breed))
     }
 }

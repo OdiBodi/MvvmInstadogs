@@ -38,11 +38,8 @@ class ImageDownloadOperation: Operation {
                 return
             }
 
-            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-                return
-            }
-
-            guard let data = data else {
+            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode),
+                  let data else {
                 return
             }
 
